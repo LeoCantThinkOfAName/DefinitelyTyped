@@ -8,6 +8,7 @@ import Layer from '../layer/Layer';
 import VectorLayer from '../layer/Vector';
 import MapBrowserEvent from '../MapBrowserEvent';
 import { ObjectEvent } from '../Object';
+import PluggableMap from '../PluggableMap';
 import Source from '../source/Source';
 import { StyleFunction, StyleLike } from '../style/Style';
 import Interaction from './Interaction';
@@ -25,7 +26,7 @@ export interface Options {
     filter?: FilterFunction;
     hitTolerance?: number;
 }
-export enum SelectEventType {
+declare enum SelectEventType {
     SELECT = 'select',
 }
 export default class Select extends Interaction {
@@ -33,10 +34,13 @@ export default class Select extends Interaction {
     getFeatures(): Collection<Feature<Geometry>>;
     getHitTolerance(): number;
     getLayer(feature: FeatureLike): VectorLayer;
+    getStyle(): StyleLike;
+    handleEvent(mapBrowserEvent: MapBrowserEvent<UIEvent>): boolean;
     setHitTolerance(hitTolerance: number): void;
-    on(type: string | string[], listener: (p0: any) => void): EventsKey | EventsKey[];
-    once(type: string | string[], listener: (p0: any) => void): EventsKey | EventsKey[];
-    un(type: string | string[], listener: (p0: any) => void): void;
+    setMap(map: PluggableMap): void;
+    on(type: string | string[], listener: (p0: any) => any): EventsKey | EventsKey[];
+    once(type: string | string[], listener: (p0: any) => any): EventsKey | EventsKey[];
+    un(type: string | string[], listener: (p0: any) => any): void;
     on(type: 'change', listener: (evt: BaseEvent) => void): EventsKey;
     once(type: 'change', listener: (evt: BaseEvent) => void): EventsKey;
     un(type: 'change', listener: (evt: BaseEvent) => void): void;
@@ -53,14 +57,14 @@ export default class Select extends Interaction {
     once(type: 'select', listener: (evt: SelectEvent) => void): EventsKey;
     un(type: 'select', listener: (evt: SelectEvent) => void): void;
 }
-export class SelectEvent extends BaseEvent {
+declare class SelectEvent extends BaseEvent {
     constructor(
         type: SelectEventType,
         selected: Feature<Geometry>[],
         deselected: Feature<Geometry>[],
-        mapBrowserEvent: MapBrowserEvent,
+        mapBrowserEvent: MapBrowserEvent<UIEvent>,
     );
     deselected: Feature<Geometry>[];
-    mapBrowserEvent: MapBrowserEvent;
+    mapBrowserEvent: MapBrowserEvent<UIEvent>;
     selected: Feature<Geometry>[];
 }

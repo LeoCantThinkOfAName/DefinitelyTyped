@@ -37,7 +37,7 @@ export default abstract class TileSource extends Source {
     protected setKey(key: string): void;
     canExpireCache(): boolean;
     clear(): void;
-    expireCache(projection: Projection, usedTiles: { [key: string]: TileRange }): void;
+    expireCache(projection: Projection, usedTiles: { [key: string]: boolean }): void;
     forEachLoadedTile(
         projection: Projection,
         z: number,
@@ -53,10 +53,11 @@ export default abstract class TileSource extends Source {
     getTileGridForProjection(projection: Projection): TileGrid;
     getTilePixelRatio(pixelRatio: number): number;
     getTilePixelSize(z: number, pixelRatio: number, projection: Projection): Size;
+    updateCacheSize(tileCount: number, projection: Projection): void;
     abstract useTile(z: number, x: number, y: number, projection: Projection): void;
-    on(type: string | string[], listener: (p0: any) => void): EventsKey | EventsKey[];
-    once(type: string | string[], listener: (p0: any) => void): EventsKey | EventsKey[];
-    un(type: string | string[], listener: (p0: any) => void): void;
+    on(type: string | string[], listener: (p0: any) => any): EventsKey | EventsKey[];
+    once(type: string | string[], listener: (p0: any) => any): EventsKey | EventsKey[];
+    un(type: string | string[], listener: (p0: any) => any): void;
     on(type: 'change', listener: (evt: BaseEvent) => void): EventsKey;
     once(type: 'change', listener: (evt: BaseEvent) => void): EventsKey;
     un(type: 'change', listener: (evt: BaseEvent) => void): void;

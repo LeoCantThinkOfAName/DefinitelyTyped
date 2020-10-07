@@ -58,15 +58,17 @@ export default class CanvasTileLayerRenderer extends CanvasLayerRenderer {
         hitTolerance: number,
         callback: (p0: FeatureLike, p1: Layer<Source>) => T,
         declutteredFeatures: FeatureLike[],
-    ): T | void;
+    ): T;
+    getImage(): HTMLCanvasElement;
     getLayer(): TileLayer | VectorTileLayer;
     getTile(z: number, x: number, y: number, frameState: FrameState): Tile;
     handleFontsChanged(): void;
+    loadedTileCallback(tiles: { [key: number]: { [key: string]: Tile } }, zoom: number, tile: Tile): boolean;
     prepareFrame(frameState: FrameState): boolean;
     renderFrame(frameState: FrameState, target: HTMLElement): HTMLElement;
-    on(type: string | string[], listener: (p0: any) => void): EventsKey | EventsKey[];
-    once(type: string | string[], listener: (p0: any) => void): EventsKey | EventsKey[];
-    un(type: string | string[], listener: (p0: any) => void): void;
+    on(type: string | string[], listener: (p0: any) => any): EventsKey | EventsKey[];
+    once(type: string | string[], listener: (p0: any) => any): EventsKey | EventsKey[];
+    un(type: string | string[], listener: (p0: any) => any): void;
     on(type: 'change', listener: (evt: BaseEvent) => void): EventsKey;
     once(type: 'change', listener: (evt: BaseEvent) => void): EventsKey;
     un(type: 'change', listener: (evt: BaseEvent) => void): void;

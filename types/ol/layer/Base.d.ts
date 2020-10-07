@@ -19,6 +19,7 @@ export interface Options {
 }
 export default class BaseLayer extends BaseObject {
     constructor(options: Options);
+    disposeInternal(): void;
     getClassName(): string;
     getExtent(): Extent;
     getLayersArray(opt_array?: Layer<Source>[]): Layer<Source>[];
@@ -40,9 +41,9 @@ export default class BaseLayer extends BaseObject {
     setOpacity(opacity: number): void;
     setVisible(visible: boolean): void;
     setZIndex(zindex: number): void;
-    on(type: string | string[], listener: (p0: any) => void): EventsKey | EventsKey[];
-    once(type: string | string[], listener: (p0: any) => void): EventsKey | EventsKey[];
-    un(type: string | string[], listener: (p0: any) => void): void;
+    on(type: string | string[], listener: (p0: any) => any): EventsKey | EventsKey[];
+    once(type: string | string[], listener: (p0: any) => any): EventsKey | EventsKey[];
+    un(type: string | string[], listener: (p0: any) => any): void;
     on(type: 'change', listener: (evt: BaseEvent) => void): EventsKey;
     once(type: 'change', listener: (evt: BaseEvent) => void): EventsKey;
     un(type: 'change', listener: (evt: BaseEvent) => void): void;

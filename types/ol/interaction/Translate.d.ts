@@ -7,6 +7,7 @@ import Geometry from '../geom/Geometry';
 import Layer from '../layer/Layer';
 import MapBrowserEvent from '../MapBrowserEvent';
 import { ObjectEvent } from '../Object';
+import PluggableMap from '../PluggableMap';
 import Source from '../source/Source';
 import PointerInteraction from './Pointer';
 
@@ -20,10 +21,15 @@ export interface Options {
 export default class Translate extends PointerInteraction {
     constructor(opt_options?: Options);
     getHitTolerance(): number;
+    handleDownEvent(event: MapBrowserEvent<UIEvent>): boolean;
+    handleDragEvent(event: MapBrowserEvent<UIEvent>): void;
+    handleMoveEvent(event: MapBrowserEvent<UIEvent>): void;
+    handleUpEvent(event: MapBrowserEvent<UIEvent>): boolean;
     setHitTolerance(hitTolerance: number): void;
-    on(type: string | string[], listener: (p0: any) => void): EventsKey | EventsKey[];
-    once(type: string | string[], listener: (p0: any) => void): EventsKey | EventsKey[];
-    un(type: string | string[], listener: (p0: any) => void): void;
+    setMap(map: PluggableMap): void;
+    on(type: string | string[], listener: (p0: any) => any): EventsKey | EventsKey[];
+    once(type: string | string[], listener: (p0: any) => any): EventsKey | EventsKey[];
+    un(type: string | string[], listener: (p0: any) => any): void;
     on(type: 'change', listener: (evt: BaseEvent) => void): EventsKey;
     once(type: 'change', listener: (evt: BaseEvent) => void): EventsKey;
     un(type: 'change', listener: (evt: BaseEvent) => void): void;
@@ -49,7 +55,7 @@ export default class Translate extends PointerInteraction {
 export class TranslateEvent extends BaseEvent {
     constructor();
     features: Collection<Feature<Geometry>>;
-    mapBrowserEvent: MapBrowserEvent;
+    mapBrowserEvent: MapBrowserEvent<UIEvent>;
     coordinate: Coordinate;
     startCoordinate: Coordinate;
 }

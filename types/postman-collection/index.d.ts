@@ -1,6 +1,6 @@
 // Type definitions for postman-collection 3.5
 // Project: https://github.com/postmanlabs/postman-collection
-// Definitions by: Kyle Buzby <https://github.com/kbuzby>
+// Definitions by: Kyle Buzby <https://github.com/kbuzby>, Vincenzo Chianese <https://github.com/XVincentX>
 // Definitions: https://github.com/DefinitelyTyped/DefinitelyTyped
 // TypeScript Version: 2.4
 /// <reference types="node" />
@@ -242,11 +242,18 @@ export class Cookie extends PropertyBase<CookieDefinition> implements Exclude<Co
 
   valueOf(): string;
 
+  /** Check whether an object is an instance of PostmanCookie. */
   static isCookie(obj: any): boolean;
-
+  /** Unparses a single Cookie. */
+  static unparseSingle(cookie: CookieDefinition): string;
+  /** Stringifies an Array or {@link PropertyList} of Cookies into a single string. */
+  static unparse(cookies: CookieDefinition[]): string;
+  /**
+   * Converts the Cookie to a single Set-Cookie header string.
+   */
+  static stringify(cookie: CookieDefinition): string;
+  /** Cookie header parser */
   static parse(str: string): CookieDefinition;
-
-  static splitParam(param: string): { key: string; value: string | boolean };
 }
 
 export class CookieList extends PropertyList<Cookie> {
@@ -359,7 +366,7 @@ export class HeaderList extends PropertyList<Header> {
 
 export interface ItemDefinition extends PropertyDefinition {
   request?: RequestDefinition;
-  responses?: ResponseDefinition[];
+  response?: ResponseDefinition[];
   events?: EventDefinition[];
 }
 
@@ -651,7 +658,7 @@ export interface UrlDefinition extends PropertyBaseDefinition {
   auth?: { user: string; password: string };
   hash?: string;
   host?: string[] | string;
-  path: string[] | string;
+  path?: string[] | string;
   port?: string;
   query?: QueryParamDefinition[] | PropertyList<QueryParam> | string;
   variable?: VariableDefinition[];
@@ -662,7 +669,7 @@ export class Url extends PropertyBase<UrlDefinition> implements UrlDefinition {
   auth?: { user: string; password: string };
   hash?: string;
   host?: string[];
-  path: string[];
+  path?: string[];
   port?: string;
   protocol?: string;
   query: PropertyList<QueryParam>;

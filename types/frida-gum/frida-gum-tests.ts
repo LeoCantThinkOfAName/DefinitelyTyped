@@ -1,5 +1,34 @@
 Frida.version; // $ExpectType string
 
+// $ExpectType NativePointer
+const p = ptr(1234);
+
+// $ExpectType number
+p.toInt32();
+// $ExpectType number
+p.toUInt32();
+
+// $ExpectType NativePointer
+p.sign();
+// $ExpectType NativePointer
+p.sign("ia", 42);
+// $ExpectError
+p.sign("invalid", 42);
+
+// $ExpectType NativePointer
+p.strip();
+// $ExpectType NativePointer
+p.strip("ia");
+// $ExpectError
+p.strip("invalid");
+
+// $ExpectType NativePointer
+p.blend(1337);
+// $ExpectError
+p.blend(ptr(42));
+// $ExpectError
+p.blend();
+
 const otherPuts = new NativeCallback(() => {
     return 0;
 }, "int", ["pointer"]);
@@ -48,10 +77,37 @@ Interceptor.attach(puts, {
     }
 });
 
+Interceptor.flush();
+
+const cm = new CModule(`
+#include <gum/gumstalker.h>
+
+void
+process (const GumEvent * event,
+         GumCpuContext * cpu_context,
+         gpointer user_data)
+{
+}
+`);
+
+Stalker.follow(Process.getCurrentThreadId(), {
+    events: {
+        compile: true,
+        call: true,
+        ret: true
+    },
+    onEvent: cm.process,
+    data: ptr(42)
+});
+
 const obj = new ObjC.Object(ptr("0x42"));
 
 // $ExpectType Object
 obj;
+
+const b = new ObjC.Block(ptr(0x1234));
+b.declare({ retType: "void", argTypes: ["int"] });
+b.declare({ types: "v12@?0i8" });
 
 Java.enumerateClassLoadersSync()
     .forEach(classLoader => {
@@ -91,3 +147,18 @@ Java.enumerateClassLoadersSync()
         // $ExpectType Wrapper<AnotherProps>
         Java.cast(MyJavaClass, MyAnotherJavaClass);
     });
+
+Java.perform(() => {
+    Java.enumerateMethods("*!*game*/i").forEach(group => {
+        const factory = Java.ClassFactory.get(group.loader);
+        group.classes.forEach(klass => {
+            const C = factory.use(klass.name);
+            klass.methods.forEach(methodName => {
+                const method: Java.MethodDispatcher = C[methodName];
+                method.implementation = function(...args) {
+                    return method.apply(this, args);
+                };
+            });
+        });
+    });
+});

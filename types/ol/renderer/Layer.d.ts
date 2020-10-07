@@ -16,6 +16,7 @@ import TileRange from '../TileRange';
 
 export default class LayerRenderer<LayerType extends Layer = Layer> extends Observable {
     constructor(layer: LayerType);
+    protected layer_: LayerType;
     protected createLoadedTileFinder(
         source: TileSource,
         projection: Projection,
@@ -29,17 +30,17 @@ export default class LayerRenderer<LayerType extends Layer = Layer> extends Obse
         hitTolerance: number,
         callback: (p0: FeatureLike, p1: Layer<Source>) => T,
         declutteredFeatures: FeatureLike[],
-    ): T | void;
+    ): T;
     getDataAtPixel(pixel: Pixel, frameState: FrameState, hitTolerance: number): Uint8ClampedArray | Uint8Array;
     getFeatures(pixel: Pixel): Promise<Feature<Geometry>[]>;
     getLayer(): LayerType;
     handleFontsChanged(): void;
-    loadedTileCallback(tiles: { [key: number]: { [key: string]: Tile } }, zoom: number, tile: Tile): void;
+    loadedTileCallback(tiles: { [key: number]: { [key: string]: Tile } }, zoom: number, tile: Tile): boolean;
     prepareFrame(frameState: FrameState): boolean;
     renderFrame(frameState: FrameState, target: HTMLElement): HTMLElement;
-    on(type: string | string[], listener: (p0: any) => void): EventsKey | EventsKey[];
-    once(type: string | string[], listener: (p0: any) => void): EventsKey | EventsKey[];
-    un(type: string | string[], listener: (p0: any) => void): void;
+    on(type: string | string[], listener: (p0: any) => any): EventsKey | EventsKey[];
+    once(type: string | string[], listener: (p0: any) => any): EventsKey | EventsKey[];
+    un(type: string | string[], listener: (p0: any) => any): void;
     on(type: 'change', listener: (evt: BaseEvent) => void): EventsKey;
     once(type: 'change', listener: (evt: BaseEvent) => void): EventsKey;
     un(type: 'change', listener: (evt: BaseEvent) => void): void;

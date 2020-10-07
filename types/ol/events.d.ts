@@ -6,7 +6,11 @@ export interface EventsKey {
     target: EventTargetLike;
     type: string;
 }
+export type Listener = ListenerFunction | ListenerObject;
 export type ListenerFunction = (p0: Event | BaseEvent) => boolean;
+export interface ListenerObject {
+    handleEvent: ListenerFunction;
+}
 export function listen(
     target: EventTargetLike,
     type: string,

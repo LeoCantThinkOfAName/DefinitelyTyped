@@ -1,5 +1,4 @@
 import { Coordinate } from '../../coordinate';
-import Disposable from '../../Disposable';
 import { Extent } from '../../extent';
 import { FeatureLike } from '../../Feature';
 import { DeclutterItems } from '../../PluggableMap';
@@ -8,7 +7,7 @@ import { DeclutterGroup } from '../canvas';
 import { SerializableInstructions } from './Builder';
 import BuilderType from './BuilderType';
 
-export default class ExecutorGroup extends Disposable {
+export default class ExecutorGroup {
     constructor(
         maxExtent: Extent,
         resolution: number,
@@ -20,6 +19,7 @@ export default class ExecutorGroup extends Disposable {
     clip(context: CanvasRenderingContext2D, transform: Transform): void;
     execute(
         context: CanvasRenderingContext2D,
+        contextScale: number,
         transform: Transform,
         viewRotation: number,
         snapToPixel: boolean,

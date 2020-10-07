@@ -1,4 +1,5 @@
 import Circle from './geom/Circle';
+import Projection from './proj/Projection';
 
 export type Coordinate = number[];
 export type CoordinateFormat = (p0: Coordinate | undefined) => string;
@@ -10,9 +11,11 @@ export function degreesToStringHDMS(hemispheres: string, degrees: number, opt_fr
 export function distance(coord1: Coordinate, coord2: Coordinate): number;
 export function equals(coordinate1: Coordinate, coordinate2: Coordinate): boolean;
 export function format(coordinate: Coordinate, template: string, opt_fractionDigits?: number): string;
+export function getWorldsAway(coordinate: Coordinate, projection: Projection, opt_sourceExtentWidth?: number): number;
 export function rotate(coordinate: Coordinate, angle: number): Coordinate;
 export function scale(coordinate: Coordinate, scale: number): Coordinate;
 export function squaredDistance(coord1: Coordinate, coord2: Coordinate): number;
 export function squaredDistanceToSegment(coordinate: Coordinate, segment: Coordinate[]): number;
 export function toStringHDMS(coordinate: Coordinate, opt_fractionDigits?: number): string;
 export function toStringXY(coordinate: Coordinate, opt_fractionDigits?: number): string;
+export function wrapX(coordinate: Coordinate, projection: Projection): Coordinate;

@@ -4,6 +4,7 @@ import { EventsKey } from '../events';
 import BaseEvent from '../events/Event';
 import Feature from '../Feature';
 import Geometry from '../geom/Geometry';
+import MapBrowserEvent from '../MapBrowserEvent';
 import { ObjectEvent } from '../Object';
 import { Pixel } from '../pixel';
 import PluggableMap from '../PluggableMap';
@@ -29,11 +30,14 @@ export interface SegmentData {
 export default class Snap extends PointerInteraction {
     constructor(opt_options?: Options);
     addFeature(feature: Feature<Geometry>, opt_listen?: boolean): void;
+    handleEvent(evt: MapBrowserEvent<UIEvent>): boolean;
+    handleUpEvent(evt: MapBrowserEvent<UIEvent>): boolean;
     removeFeature(feature: Feature<Geometry>, opt_unlisten?: boolean): void;
+    setMap(map: PluggableMap): void;
     snapTo(pixel: Pixel, pixelCoordinate: Coordinate, map: PluggableMap): Result;
-    on(type: string | string[], listener: (p0: any) => void): EventsKey | EventsKey[];
-    once(type: string | string[], listener: (p0: any) => void): EventsKey | EventsKey[];
-    un(type: string | string[], listener: (p0: any) => void): void;
+    on(type: string | string[], listener: (p0: any) => any): EventsKey | EventsKey[];
+    once(type: string | string[], listener: (p0: any) => any): EventsKey | EventsKey[];
+    un(type: string | string[], listener: (p0: any) => any): void;
     on(type: 'change', listener: (evt: BaseEvent) => void): EventsKey;
     once(type: 'change', listener: (evt: BaseEvent) => void): EventsKey;
     un(type: 'change', listener: (evt: BaseEvent) => void): void;

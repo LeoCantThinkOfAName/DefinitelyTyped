@@ -13,10 +13,10 @@ import LayerRenderer from '../Layer';
 export default abstract class CanvasLayerRenderer<LayerType extends Layer = Layer> extends LayerRenderer {
     constructor(layer: LayerType);
     protected container: HTMLElement;
-    protected context: CanvasRenderingContext2D;
     protected inversePixelTransform: Transform;
     protected pixelTransform: Transform;
     protected renderedResolution: number;
+    protected tempTransform: Transform;
     protected clip(context: CanvasRenderingContext2D, frameState: FrameState, extent: Extent): void;
     protected clipUnrotated(context: CanvasRenderingContext2D, frameState: FrameState, extent: Extent): void;
     protected getRenderTransform(
@@ -30,22 +30,21 @@ export default abstract class CanvasLayerRenderer<LayerType extends Layer = Laye
     ): Transform;
     protected postRender(context: CanvasRenderingContext2D, frameState: FrameState): void;
     protected preRender(context: CanvasRenderingContext2D, frameState: FrameState): void;
-    createTransformString(transform: Transform): string;
     abstract forEachFeatureAtCoordinate<T>(
         coordinate: Coordinate,
         frameState: FrameState,
         hitTolerance: number,
         callback: (p0: FeatureLike, p1: Layer<Source>) => T,
         declutteredFeatures: FeatureLike[],
-    ): T | void;
+    ): T;
     getDataAtPixel(pixel: Pixel, frameState: FrameState, hitTolerance: number): Uint8ClampedArray | Uint8Array;
     abstract handleFontsChanged(): void;
     abstract prepareFrame(frameState: FrameState): boolean;
     abstract renderFrame(frameState: FrameState, target: HTMLElement): HTMLElement;
     useContainer(target: HTMLElement, transform: string, opacity: number): void;
-    on(type: string | string[], listener: (p0: any) => void): EventsKey | EventsKey[];
-    once(type: string | string[], listener: (p0: any) => void): EventsKey | EventsKey[];
-    un(type: string | string[], listener: (p0: any) => void): void;
+    on(type: string | string[], listener: (p0: any) => any): EventsKey | EventsKey[];
+    once(type: string | string[], listener: (p0: any) => any): EventsKey | EventsKey[];
+    un(type: string | string[], listener: (p0: any) => any): void;
     on(type: 'change', listener: (evt: BaseEvent) => void): EventsKey;
     once(type: 'change', listener: (evt: BaseEvent) => void): EventsKey;
     un(type: 'change', listener: (evt: BaseEvent) => void): void;

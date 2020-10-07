@@ -25,6 +25,11 @@ export function clearAllProjections(): void;
 export function clearUserProjection(): void;
 export function cloneTransform(input: number[], opt_output?: number[], opt_dimension?: number): number[];
 export function createProjection(projection: Projection | string | undefined, defaultCode: string): Projection;
+export function createSafeCoordinateTransform(
+    sourceProj: Projection,
+    destProj: Projection,
+    transform: (p0: Coordinate) => Coordinate,
+): (p0: Coordinate) => Coordinate;
 export function createTransformFromCoordinateTransform(
     coordTransform: (p0: Coordinate) => Coordinate,
 ): TransformFunction;
@@ -51,7 +56,12 @@ export function toLonLat(coordinate: Coordinate, opt_projection?: ProjectionLike
 export function toUserCoordinate(coordinate: number[], sourceProjection: ProjectionLike): number[];
 export function toUserExtent(extent: Extent, sourceProjection: ProjectionLike): Extent;
 export function transform(coordinate: Coordinate, source: ProjectionLike, destination: ProjectionLike): Coordinate;
-export function transformExtent(extent: Extent, source: ProjectionLike, destination: ProjectionLike): Extent;
+export function transformExtent(
+    extent: Extent,
+    source: ProjectionLike,
+    destination: ProjectionLike,
+    opt_stops?: number,
+): Extent;
 export function transformWithProjections(
     point: Coordinate,
     sourceProjection: Projection,

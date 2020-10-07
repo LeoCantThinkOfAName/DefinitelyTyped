@@ -67,7 +67,7 @@ declare namespace Chai {
         getOwnEnumerableProperties(obj: object): Array<string | symbol>;
         getMessage(errorLike: Error | string): string;
         getMessage(obj: any, args: AssertionArgs): string;
-        inspect(obj: any, showHidden?: boolean, depth?: number, colors?: boolean): void;
+        inspect(obj: any, showHidden?: boolean, depth?: number, colors?: boolean): string;
         isProxyEnabled(): boolean;
         objDisplay(obj: object): void;
         proxify(obj: object, nonChainableMethodName: string): object;
@@ -202,6 +202,7 @@ declare namespace Chai {
         empty: Assertion;
         arguments: Assertion;
         Arguments: Assertion;
+        finite: Assertion;
         equal: Equal;
         equals: Equal;
         eq: Equal;
@@ -761,6 +762,16 @@ declare namespace Chai {
          * @param message   Message to display on error.
          */
         isNotNumber<T>(value: T, message?: string): void;
+
+        /**
+         * Asserts that value is a finite number.
+         * Unlike `.isNumber`, this will fail for `NaN` and `Infinity`.
+         *
+         * @type T   Type of value
+         * @param value    Actual value
+         * @param message   Message to display on error.
+         */
+        isFinite<T>(value: T, message?: string): void;
 
         /**
          * Asserts that value is a boolean.

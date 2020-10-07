@@ -17,18 +17,19 @@ export interface Options {
 }
 export default abstract class Source extends BaseObject {
     constructor(options: Options);
-    protected setState(state: State): void;
     getAttributions(): Attribution;
     getAttributionsCollapsible(): boolean;
+    getContextOptions(): any;
     getProjection(): Projection;
     abstract getResolutions(): number[];
     getState(): State;
     getWrapX(): boolean;
     refresh(): void;
     setAttributions(attributions: AttributionLike | undefined): void;
-    on(type: string | string[], listener: (p0: any) => void): EventsKey | EventsKey[];
-    once(type: string | string[], listener: (p0: any) => void): EventsKey | EventsKey[];
-    un(type: string | string[], listener: (p0: any) => void): void;
+    setState(state: State): void;
+    on(type: string | string[], listener: (p0: any) => any): EventsKey | EventsKey[];
+    once(type: string | string[], listener: (p0: any) => any): EventsKey | EventsKey[];
+    un(type: string | string[], listener: (p0: any) => any): void;
     on(type: 'change', listener: (evt: BaseEvent) => void): EventsKey;
     once(type: 'change', listener: (evt: BaseEvent) => void): EventsKey;
     un(type: 'change', listener: (evt: BaseEvent) => void): void;

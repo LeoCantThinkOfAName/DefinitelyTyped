@@ -1,6 +1,7 @@
 // Type definitions for primus 7.3
 // Project: https://github.com/primus/primus#readme
 // Definitions by: Christian Vaagland Tellnes <https://github.com/tellnes>
+//                 Alaa Zorkane <https://github.com/alaazorkane>
 // Definitions: https://github.com/DefinitelyTyped/DefinitelyTyped
 // Minimum TypeScript Version: 3.0
 
@@ -145,6 +146,20 @@ declare namespace Primus {
         on(event: 'end', handler: () => void): this;
     }
 
+    interface ReconnectOpts {
+        max?: number;
+        min?: number;
+        retries?: number | null;
+        'reconnect timeout'?: number;
+        factor?: number;
+    }
+    interface ReconnectEventOpts extends Required<ReconnectOpts> {
+        start: number;
+        duration: number;
+        attempt: number;
+        backoff: boolean;
+        scheduled: number;
+    }
     interface SocketOptions {
         // https://github.com/unshiftio/recovery
         reconnect?: {
@@ -173,19 +188,11 @@ declare namespace Primus {
         emits: emits.emits;
         id(fn: (id: string) => void): this;
 
-        on(
-            event:
-                | 'open'
-                | 'reconnect'
-                | 'reconnect scheduled'
-                | 'reconnected'
-                | 'reconnect timeout'
-                | 'reconnect failed'
-                | 'end',
-            handler: () => void,
-        ): this;
-
+        on(event: 'open' | 'end', handler: () => void): this;
+        on(event: 'reconnect' | 'reconnect scheduled' | 'reconnected', handler: (opts: ReconnectEventOpts) => void): this;
+        on(event: 'reconnect timeout' | 'reconnect failed', handler: (err: Error, opts: ReconnectEventOpts) => void): this;
         on(event: 'data', handler: (message: any) => void): this;
         on(event: 'error', handler: (err: Error) => void): this;
+        open(): this;
     }
 }
